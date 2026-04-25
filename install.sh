@@ -25,10 +25,10 @@ curl -fsSL \
 echo "Installing..."
 unzip -q "$TMP_DIR/agent.zip" -d "$TMP_DIR"
 
-echo "Contents:"
-find "$TMP_DIR" -type f
-
-BINARY=$(find "$TMP_DIR" -type f -executable | head -1)
+BINARY=$(find "$TMP_DIR" -type f -name "victor" | head -1)
+if [[ -z "$BINARY" ]]; then
+  BINARY=$(find "$TMP_DIR" -type f -executable | grep -v '\.zip$' | head -1)
+fi
 if [[ -z "$BINARY" ]]; then
   BINARY=$(find "$TMP_DIR" -type f | grep -v '\.zip$' | head -1)
 fi
