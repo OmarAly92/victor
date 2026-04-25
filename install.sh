@@ -24,8 +24,22 @@ curl -fsSL \
 
 echo "Installing..."
 unzip -q "$TMP_DIR/agent.zip" -d "$TMP_DIR"
-chmod +x "$TMP_DIR/agent/victor"
-sudo mv "$TMP_DIR/agent/victor" "$INSTALL_DIR/$BINARY_NAME"
+
+echo "Contents:"
+find "$TMP_DIR" -type f
+
+BINARY=$(find "$TMP_DIR" -type f -executable | head -1)
+if [[ -z "$BINARY" ]]; then
+  BINARY=$(find "$TMP_DIR" -type f | grep -v '\.zip$' | head -1)
+fi
+
+if [[ -z "$BINARY" ]]; then
+  echo "Could not find binary in zip"
+  exit 1
+fi
+
+chmod +x "$BINARY"
+sudo mv "$BINARY" "$INSTALL_DIR/$BINARY_NAME"
 rm -rf "$TMP_DIR"
 
 echo "Done. Run: victor"
